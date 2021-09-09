@@ -189,6 +189,16 @@ if(isset($_POST['type'])){
 		echo json_encode($rec);
     }
 
+    if($_POST['type']=="load_select_prescription") {
+        $MID =  $_POST['MID'];
+		$db = new DbConnect;
+		$conn = $db->connect();
+		$stmt = $conn->prepare("SELECT `Pre_ID`, `Pre_Date`, `QR_ID`,`D_Name` FROM `prescription`,`doctor` WHERE prescription.DID=doctor.DID AND prescription.MID ='$MID' ORDER BY prescription.Pre_Date DESC ");
+		$stmt->execute();
+		$rec = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo json_encode($rec);
+    }
+
     if($_POST['type']=="load_drugs") {
         $PreID =  $_POST['PreID'];
 		$db = new DbConnect;
@@ -234,6 +244,36 @@ if(isset($_POST['type'])){
 		$db = new DbConnect;
 		$conn = $db->connect();
 		$stmt = $conn->prepare("SELECT * FROM `pharmacy` WHERE `QRID`='$QR';");
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo json_encode($result);
+    }
+
+    if($_POST['type']=="load_doc_queue") {
+        $MID =  $_POST['MID'];
+        $DID =  $_POST['DID'];
+		$db = new DbConnect;
+		$conn = $db->connect();
+		$stmt = $conn->prepare("INSERT INTO `doctor_queue`(`DID`, `MID`) VALUES ('$DID','$MID');");
+		$stmt->execute();
+        $last_id = $conn->lastInsertId();
+		$stmt = $conn->prepare("SELECT `DQID`, `D_name`, `name`, `timestamp`, `status` FROM `doctor_queue`,`member`,`doctor` WHERE `member`.`MID` = `doctor_queue`.`MID` AND `doctor`.`DID` = `doctor_queue`.`DID` AND
+        `DQID`='$last_id';");
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo json_encode($result);
+    }
+
+    if($_POST['type']=="load_pharmacy_queue") {
+        $MID =  $_POST['MID'];
+        $Pha_ID =  $_POST['Pha_ID'];
+        $Pres_ID =  $_POST['Pres_ID'];
+		$db = new DbConnect;
+		$conn = $db->connect();
+		$stmt = $conn->prepare("INSERT INTO `phamacy_queue`(`PHID`, `PREID`) VALUES ('$Pha_ID','$Pres_ID');");
+		$stmt->execute();
+		$last_id = $conn->lastInsertId();
+		$stmt = $conn->prepare("SELECT `PQID`, `Ph_name`, `timestamp`, `status` FROM `phamacy_queue`,`pharmacy` WHERE `phamacy_queue`.`PHID` = `pharmacy`.`ph_ID` AND `PQID` = '$last_id';");
 		$stmt->execute();
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo json_encode($result);
