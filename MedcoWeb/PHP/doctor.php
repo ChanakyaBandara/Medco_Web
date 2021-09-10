@@ -64,7 +64,7 @@
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             // echo '<script language="javascript">
-			// Alert("Succesfully added!");
+			// window.alert("Succesfully added!");
 			// window.location.href = "../admin_add_pharmacy.html"
 			// </script>';
 			exit();

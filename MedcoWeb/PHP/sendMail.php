@@ -13,7 +13,7 @@
         $mail->SMTPSecure='tls';
 
         $mail->Username='medcosystems@gmail.com';
-        $mail->Password='medco456';
+        $mail->Password='medco@456';
 
         $mail->setFrom('medcosystems@gmail.com','MEDCO');
         $mail->addAddress($reciver);

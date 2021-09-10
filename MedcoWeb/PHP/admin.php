@@ -1,6 +1,8 @@
 <?php 
+
 	require 'dbconnect.php';
-	require 'sendMail.php';
+	require 'uploadFile.php';
+	// require 'sendMail.php';
 
 	function creat_user($nic,$Password,$type){
         $db = new DbConnect;
@@ -98,11 +100,11 @@
             $stmt = $conn->prepare($sql);
             $stmt->execute();
 
-            $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtDocEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
-            sendmail($txtDocEmail,'New Doctor Account Created',$desc);
+            // $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtDocEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
+            // sendmail($txtDocEmail,'New Doctor Account Created',$desc);
 
             echo '<script language="javascript">
-			Alert("Succesfully added!");
+			window.alert("Succesfully added!");
 			window.location.href = "../admin_add_doctor.html"
 			</script>';
 			exit();
@@ -130,11 +132,11 @@
             $stmt = $conn->prepare($sql);
             $stmt->execute();
 
-            $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtPharEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
-            sendmail($txtPharEmail,'New Pharmacy Account Created',$desc);
+            // $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtPharEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
+            // sendmail($txtPharEmail,'New Pharmacy Account Created',$desc);
 
             echo '<script language="javascript">
-			Alert("Succesfully added!");
+			window.alert("Succesfully added!");
 			window.location.href = "../admin_add_pharmacy.html"
 			</script>';
 			exit();
@@ -147,7 +149,11 @@
 		$txtDrugManComp = $_POST['txtDrugManComp'];
         $txtDrugStr = $_POST['txtDrugStr'];
         $txtDrugDes = $_POST['txtDrugDes'];
-		$txtDrugImg = $_POST['txtDrugImg'];
+
+        $file = $_FILES['txtDrugImg'];
+		$allowd = array('jpg', 'jpeg', 'png');
+		$fileDestination = '../../Images';
+		$txtDrugImg = uploadfile($file,$allowd,$fileDestination);
 
         $db = new DbConnect;
         $sql = "INSERT INTO `drugs`( `drg_name`, `manf_comp`, `drg_strength`, `drg_Desc`, `drg_Img`) VALUES ('$txtDrugName','$txtDrugManComp','$txtDrugStr','$txtDrugDes','$txtDrugImg');";
@@ -160,9 +166,10 @@
             $stmt = $conn->prepare($sql);
             $stmt->execute();
             echo '<script language="javascript">
-			Alert("Succesfully added!");
-			window.location.href = "../admin_add_pharmacy.html"
+			window.alert("Succesfully added!")
+	        window.location.href = "../admin_add_medicine.html"
 			</script>';
+
 			exit();
         }
 	}

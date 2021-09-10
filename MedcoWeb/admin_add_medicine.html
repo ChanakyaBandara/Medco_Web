@@ -122,7 +122,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="header-title">Add Medicine</h4>
-                                <form action="PHP/admin.php" method="POST">
+                                <form action="PHP/admin.php" method="POST" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="txtDrugName" class="col-form-label"><b>Drug Name</b></label>
                                         <input class="form-control" type="text" value="" id="txtDrugName"
@@ -148,6 +148,12 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
+                                        <div class="col-sm-3 mb-3 mb-sm-0">
+                                            <img id="imageview"
+                                                style="width: 300px; height: 300px; max-width: 100%; max-height: 100%; border-radius: 20px; border: 5px solid #555;">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
                                         <div class="col-md-6 mb-3">
                                             <label for="txtDrugDes"><b>Drug Description</b></label>
                                             <input type="text" class="form-control" id="txtDrugDes" name="txtDrugDes"
@@ -158,8 +164,8 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="txtDrugImg"><b>Image</b></label>
-                                            <input type="text" class="form-control" id="txtDrugImg" name="txtDrugImg"
-                                                placeholder="Image" value="" required="">
+                                            <input class="form-control form-control-user" type="file" name="txtDrugImg"
+                                                id="txtDrugImg" placeholder="Image">
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
@@ -223,6 +229,21 @@
             var userName = getUserName();
             document.getElementById("userName").textContent = userName;
         });
+    </script>
+
+    <script language="javascript">
+        const image = document.getElementById("txtDrugImg");
+        const imageview = document.getElementById("imageview");
+
+        image.onchange = (e) => {
+            console.log("Image changed");
+            var file = image.files[0];
+            reader = new FileReader();
+            reader.onload = function () {
+                imageview.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        };
     </script>
 </body>
 
