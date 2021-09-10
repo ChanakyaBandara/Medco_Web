@@ -1,5 +1,6 @@
 <?php 
 	require 'dbconnect.php';
+	require 'sendMail.php';
 
 	function creat_user($nic,$Password,$type){
         $db = new DbConnect;
@@ -16,7 +17,6 @@
             return $last_id;
         }
     }
-
 
 	if(isset($_POST['loadPhamacy'])) {
 		$db = new DbConnect;
@@ -82,7 +82,7 @@
         $txtDocNIC = $_POST['txtDocNIC'];
 		$txtDocEmail = $_POST['txtDocEmail'];
 		$txtDocPhone = $_POST['txtDocPhone'];
-        $Password = "123456789";
+        $Password = randomPassword();
         $UniqID = "DOC_".uniqid();
 
 
@@ -97,6 +97,10 @@
         else {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
+
+            $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtDocEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
+            sendmail($txtDocEmail,'New Doctor Account Created',$desc);
+
             echo '<script language="javascript">
 			Alert("Succesfully added!");
 			window.location.href = "../admin_add_doctor.html"
@@ -111,7 +115,7 @@
         $txtPharRegId = $_POST['txtPharRegId'];
         $txtPharLocation = $_POST['txtPharLocation'];
 		$txtPharPhone = $_POST['txtPharPhone'];
-        $Password = "123456789";
+        $Password = randomPassword();
         $UniqID = "PHA_".uniqid();
 
         $LID = creat_user($txtPharEmail,$Password,2);
@@ -125,6 +129,10 @@
         else {
             $stmt = $conn->prepare($sql);
             $stmt->execute();
+
+            $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtPharEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
+            sendmail($txtPharEmail,'New Pharmacy Account Created',$desc);
+
             echo '<script language="javascript">
 			Alert("Succesfully added!");
 			window.location.href = "../admin_add_pharmacy.html"
