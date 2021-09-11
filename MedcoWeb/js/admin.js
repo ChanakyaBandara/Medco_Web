@@ -10,7 +10,7 @@ function loadPharmacies() {
     $("#adminViewPhamacyTBL").empty();
     $("#adminViewPhamacyTBL").append(
       //`ph_ID`, `Ph_name`, `Ph_reg`, `LID`, `location`, `phone`
-      "<thead><tr><th>Phamacy ID</th><th>Name</th><th>Reg No</th><th>Email</th><th>Location</th><th>Phone</th>"
+      "<thead><th>Phamacy ID</th><th>Name</th><th>Reg No</th><th>Email</th><th>Location</th><th>Phone</th></thead><tbody id='adminViewPhamacyTBody'>"
     );
     result.forEach(function (result) {
       $("#adminViewPhamacyTBL").append(
@@ -45,7 +45,7 @@ function loadDoctors() {
     $("#adminViewDoctorTBL").empty();
     $("#adminViewDoctorTBL").append(
       //`DID`, `D_name`, `phone`, `medicalRegID`, `nic`, `email
-      "<thead><tr><th>Doctor ID</th><th>Name</th><th>Phone No</th><th>Reg No</th><th>NIC</th><th>Email</th>"
+      "<thead><th>Doctor ID</th><th>Name</th><th>Phone No</th><th>Reg No</th><th>NIC</th><th>Email</th><tbody id='adminViewDoctoTBody'>"
     );
     result.forEach(function (result) {
       $("#adminViewDoctorTBL").append(
@@ -80,7 +80,7 @@ function loadMembers() {
     $("#adminViewPatientTBL").empty();
     $("#adminViewPatientTBL").append(
       //`MID`, `name`, `email`, `nic`, `age`, `phone`, `gender`
-      "<thead><tr><th>Patient ID</th><th>Name</th><th>Email</th><th>NIC</th><th>Age</th><th>Phone</th><th>Gender</th>"
+      "<thead><th>Patient ID</th><th>Name</th><th>Email</th><th>NIC</th><th>Age</th><th>Phone</th><th>Gender</th><tbody id='adminViewPatientTBody'>"
     );
     result.forEach(function (result) {
       $("#adminViewPatientTBL").append(
@@ -117,7 +117,7 @@ function loadDrugs() {
     $("#adminViewDrugTBL").empty();
     $("#adminViewDrugTBL").append(
       //`drg_ID`, `drg_name`, `manf_comp`, `drg_strength`, `drg_Desc`, `drg_Img`
-      "<thead><tr><th>Drug ID</th><th>Name</th><th>Manufacture Company</th><th>Strength</th><th>Description</th><th>Image</th>"
+      "<thead><th>Drug ID</th><th>Name</th><th>Manufacture Company</th><th>Strength</th><th>Description</th><th>Image</th></thead><tbody id='adminViewMedicineTBody'>"
     );
     result.forEach(function (result) {
       $("#adminViewDrugTBL").append(
@@ -142,4 +142,83 @@ function loadDrugs() {
 
 function getUserName() {
   return "Admin";
+}
+
+
+
+function downloadDoctorPDF() {
+  document.getElementById('content').style.display = 'block';
+  
+  const invoice =this.document.getElementById("adminViewDoctoTBody");
+  const internalTable = invoice.getInnerHTML();
+  const d = new Date();
+  const template="<img src='assets/images/icon/logo3.png' alt='logo'><h2 style='text-align: center'> Registerd Doctors </h2><br><table style='width: 100%;'><thead style='padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;'><tr><th>Doctor ID</th><th>Name</th><th>Phone No</th><th>Reg No</th><th>NIC</th><th>Email</th><tbody style='background-color: #f2f2f2;'>"+internalTable+"</tbody></table><p>"+d+"</p>";
+  console.log(invoice)
+  console.log(window)
+  var opt = {
+      margin: 1,
+      filename: 'Doctors Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+  html2pdf().from(template).set(opt).save();
+}
+
+function downloadPharmacyPDF() {
+  document.getElementById('content').style.display = 'block';
+  
+  const invoice =this.document.getElementById("adminViewPhamacyTBody");
+  const internalTable = invoice.getInnerHTML();
+  const d = new Date();
+  const template="<img src='assets/images/icon/logo3.png' alt='logo'><h2 style='text-align: center'> Registerd Pharmacies </h2><br><table style='width: 100%; wrap:false'><thead style='padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;'><th>Phamacy ID</th><th>Name</th><th>Reg No</th><th>Email</th><th>Location</th><th>Phone</th><tbody style='background-color: #f2f2f2;'>"+internalTable+"</tbody></table><p>"+d+"</p>";
+  console.log(invoice)
+  console.log(window)
+  var opt = {
+      margin: 1,
+      filename: 'Pharmacies Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+  html2pdf().from(template).set(opt).save();
+}
+
+function downloadMedicinePDF() {
+  document.getElementById('content').style.display = 'block';
+  
+  const invoice =this.document.getElementById("adminViewMedicineTBody");
+  const internalTable = invoice.getInnerHTML();
+  const d = new Date();
+  const template="<img src='assets/images/icon/logo3.png' alt='logo'><h2 style='text-align: center'> Registerd Medicines </h2><br><table style='width: 100%; wrap:false'><thead style='padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;'><th>Drug ID</th><th>Name</th><th>Manufacture Company</th><th>Strength</th><th>Description</th><th>Image</th><tbody style='background-color: #f2f2f2;'>"+internalTable+"</tbody></table><p>"+d+"</p>";
+  console.log(invoice)
+  console.log(window)
+  var opt = {
+      margin: 1,
+      filename: 'Medicines Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+  html2pdf().from(template).set(opt).save();
+}
+
+
+function downloadPatientPDF() {
+  document.getElementById('content').style.display = 'block';
+  
+  const invoice =this.document.getElementById("adminViewPatientTBody");
+  const internalTable = invoice.getInnerHTML();
+  const d = new Date();
+  const template="<img src='assets/images/icon/logo3.png' alt='logo'><h2 style='text-align: center'> Registerd Patients </h2><br><table style='width: 100%; wrap:false'><thead style='padding-top: 12px; padding-bottom: 12px; text-align: left; background-color: #04AA6D; color: white;'><th>Patient ID</th><th>Name</th><th>Email</th><th>NIC</th><th>Age</th><th>Phone</th><th>Gender</th><tbody style='background-color: #f2f2f2;'>"+internalTable+"</tbody></table><p>"+d+"</p>";
+  console.log(invoice)
+  console.log(window)
+  var opt = {
+      margin: 1,
+      filename: 'Patients Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+  html2pdf().from(template).set(opt).save();
 }
