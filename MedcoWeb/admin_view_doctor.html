@@ -36,11 +36,11 @@
     </div>
     <!-- preloader area end -->
     <!-- page container area start -->
-    <div class="page-container">
+    <div class="page-container" id="content">
         <!-- sidebar menu area start -->
         <div class="sidebar-menu">
             <div class="sidebar-header">
-                <div class="logo">
+                <div class="logo" >
                     <a href="index.html"><img src="assets/images/icon/logo.png" alt="logo"></a>
                 </div>
             </div>
@@ -117,9 +117,10 @@
             <div class="main-content-inner">
                 <!-- row area end -->
                 <div class="row">
+                   
                     <!-- latest news area start -->
                     <div class="col-lg-12 mt-5">
-                        <div class="card">
+                        <div class="card" >
                             <div class="card-body">
                                 <h4 class="header-title">View Doctors</h4>
                                 <!-- <div class="form-row">
@@ -161,6 +162,14 @@
                                             onclick="downloadPDF()">Submit</button>
                                     </div>
                                 </div> -->
+                                <div style="padding-right: 0px; text-align:right;" >
+                                    
+                                    <button type="reset" class="btn btn-warning mr-2" 
+                                        onclick="downloadDoctorPDF()">Download
+                                        PDF</button>
+                                   
+                                </div>
+                            </form>
                                 <div class="single-table">
                                     <div class="table-responsive">
                                         <table class="table text-center" id="adminViewDoctorTBL">
@@ -254,6 +263,11 @@
             loadDoctors();
         });
     </script>
+    <script language="javascript">
+        
+    </script>
+
+
 </body>
 
 </html>
