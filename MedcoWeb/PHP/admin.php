@@ -2,7 +2,7 @@
 
 	require 'dbconnect.php';
 	require 'uploadFile.php';
-	// require 'sendMail.php';
+	require 'sendMail.php';
 
 	function creat_user($nic,$Password,$type){
         $db = new DbConnect;
@@ -100,8 +100,8 @@
             $stmt = $conn->prepare($sql);
             $stmt->execute();
 
-            // $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtDocEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
-            // sendmail($txtDocEmail,'New Doctor Account Created',$desc);
+            $desc = "<h1>Welcome To Medco System</h1><br><p>Your username is - ".$txtDocEmail."<p>Your Password is - ".$Password."</p><br><br><p>Please use this credientials to log into your Medco account</p><p>Thank You!</p>";
+            sendmail($txtDocEmail,'New Doctor Account Created',$desc);
 
             echo '<script language="javascript">
 			window.alert("Succesfully added!");
