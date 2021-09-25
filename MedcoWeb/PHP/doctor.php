@@ -1,21 +1,36 @@
 <?php 
 	require 'dbconnect.php';
 
+	function updateQueueStatus($DQID,$status){
+        $db = new DbConnect;
+        $sql = "UPDATE `doctor_queue` SET `status`='$status' WHERE `DQID`='$DQID';";
+
+        if(!$conn = $db->connect()){
+            echo "SQL Error";
+            exit();
+        }
+        else {
+            $conn->exec($sql);
+        }
+    }
+
 	if(isset($_POST['loadPatient'])) {
+		$DID = $_POST['loadPatient'];
 		$db = new DbConnect;
 		$conn = $db->connect();
 
-		$stmt = $conn->prepare("SELECT * FROM `member`;");
+		$stmt = $conn->prepare("SELECT `DQID`, `name`, `email`, `nic`, `age`, `phone`, `gender`, `timestamp` FROM `member`,`doctor_queue` WHERE `member`.`MID`=`doctor_queue`.`MID` AND `status`=0 AND `DID`='$DID';");
 		$stmt->execute();
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo json_encode($result);
 	}
 
 	if(isset($_POST['loadPrescription'])) {
+		$DID = $_POST['loadPrescription'];
 		$db = new DbConnect;
 		$conn = $db->connect();
 
-		$stmt = $conn->prepare("SELECT `Pre_ID`,`member`.`MID` ,`member`.`name` ,`Pre_Date`, `QR_ID` FROM `prescription`,`member` WHERE `prescription`.`MID`=`member`.`MID`;");
+		$stmt = $conn->prepare("SELECT `Pre_ID`,`member`.`MID` ,`member`.`name` ,`Pre_Date`, `QR_ID` FROM `prescription`,`member` WHERE `prescription`.`MID`=`member`.`MID` AND `prescription`.`DID`='$DID';");
 		$stmt->execute();
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo json_encode($result);
@@ -31,7 +46,6 @@
 		echo json_encode($rec);
 	}
 
-
 	if(isset($_POST['loadDoctor'])) {
 		$DID = $_POST['loadDoctor'];
 		$db = new DbConnect;
@@ -43,46 +57,29 @@
 		echo json_encode($result);
 	}
 
+	if(isset($_POST['loadQueueMember'])) {
+		$DQID = $_POST['loadQueueMember'];
+		$db = new DbConnect;
+		$conn = $db->connect();
 
-
-	if(isset($_POST['addPrescription1'])) {
-		$txtPresQRID = $_POST['txtPresQRID'];
-		$datePresDate = $_POST['datePresDate'];
-        $txtPresMID = $_POST['txtPresMID'];
-        $txtPresDID = $_POST['txtPresDID'];
-		$tabl_drug=$_POST['tabl_drug'];
-		print_r($tabl_drug);
-
-        $db = new DbConnect;
-        $sql = "INSERT INTO `prescription`(`Pre_Date`, `QR_ID`, `MID`, `DID`) VALUES ('$datePresDate','$txtPresQRID','$txtPresMID','$txtPresDID')";
-
-        if(!$conn = $db->connect()){
-            echo "SQL Error";
-            exit();
-        }
-		else {
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-            // echo '<script language="javascript">
-			// window.alert("Succesfully added!");
-			// window.location.href = "../admin_add_pharmacy.html"
-			// </script>';
-			exit();
-        }
+		$stmt = $conn->prepare("SELECT `doctor_queue`.`MID`,`doctor_queue`.`DID`,`name`, `age`, `gender`,`DQID` FROM `member`,`doctor_queue` WHERE `doctor_queue`.`MID`=`member`.`MID` AND `DQID`='$DQID';");
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo json_encode($result);
 	}
 
 	if(isset($_POST['addPrescription'])){
-	
 		
-		$txtPresQRID = $_POST['txtPresQRID'];
-		$datePresDate = $_POST['datePresDate'];
+		$txtPresQRID = "PRE_".uniqid();
+		$txtPresDQID = $_POST['txtPresDQID'];
         $txtPresMID = $_POST['txtPresMID'];
         $txtPresDID = $_POST['txtPresDID'];
+		$txtPresDescription = $_POST['txtPresDescription'];
 		$tabl_drug=$_POST['tabl_drug'];
 
         $db = new DbConnect;
-        $sql = "INSERT INTO `prescription`(`Pre_Date`, `QR_ID`, `MID`, `DID`) VALUES ('$datePresDate','$txtPresQRID','$txtPresMID','$txtPresDID')";
-
+        $sql = "INSERT INTO `prescription`(`QR_ID`, `MID`, `DID`, `Description`) VALUES ('$txtPresQRID','$txtPresMID','$txtPresDID','$txtPresDescription')";
+		
 		if(!$conn = $db->connect()){
 			echo'<script language="javascript">
 					window.location.href = "../doctor_add_prescription.html"
@@ -107,6 +104,7 @@
 				}else{
 					$stmt = $conn->prepare($sql2);
 					$stmt->execute();
+					updateQueueStatus($txtPresDQID,1);
 					echo '<script language="javascript">
 							window.alert("Data Upload Successfull !")
 							window.location.href = "../doctor_add_prescription.html"
@@ -118,6 +116,14 @@
     	}
 	}
 
-	
+	if(isset($_POST['loadDrugs'])) {
+		$db = new DbConnect;
+		$conn = $db->connect();
+
+		$stmt = $conn->prepare("SELECT * FROM `drugs`;");
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo json_encode($result);
+	}
 
 ?>
