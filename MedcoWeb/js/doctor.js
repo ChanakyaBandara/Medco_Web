@@ -114,12 +114,13 @@ function loadAddPrescription(DQID) {
 function loadQueueMember() {
   const params = new URLSearchParams(window.location.search);
   if (params.has('DQID')) {
-    var DQID = params.get("DQID"); $.ajax({
+    var DQID = params.get("DQID");
+    $.ajax({
       url: "PHP/doctor.php",
       method: "post",
       data: "loadQueueMember=" + DQID,
     }).done(function (result) {
-      //console.log(result);
+      console.log(result);
       result = JSON.parse(result);
       console.log(result);
       document.getElementById("txtPresMID").value = result[0].MID;
@@ -131,6 +132,7 @@ function loadQueueMember() {
 
       console.log(document.getElementById("txtPresMID").value);
       console.log(document.getElementById("txtPresDID").value);
+      console.log(document.getElementById("txtPresDQID").value);
     });
   }
 

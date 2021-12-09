@@ -4,7 +4,7 @@
 	function updateQueueStatus($DQID,$status){
         $db = new DbConnect;
         $sql = "UPDATE `doctor_queue` SET `status`='$status' WHERE `DQID`='$DQID';";
-
+		echo $sql;
         if(!$conn = $db->connect()){
             echo "SQL Error";
             exit();
@@ -72,48 +72,50 @@
 		
 		$txtPresQRID = "PRE_".uniqid();
 		$txtPresDQID = $_POST['txtPresDQID'];
+		echo 'DQID' . $txtPresDQID;
         $txtPresMID = $_POST['txtPresMID'];
         $txtPresDID = $_POST['txtPresDID'];
 		$txtPresDescription = $_POST['txtPresDescription'];
 		$tabl_drug=$_POST['tabl_drug'];
-
         $db = new DbConnect;
         $sql = "INSERT INTO `prescription`(`QR_ID`, `MID`, `DID`, `Description`) VALUES ('$txtPresQRID','$txtPresMID','$txtPresDID','$txtPresDescription')";
-		
-		if(!$conn = $db->connect()){
-			echo'<script language="javascript">
-					window.location.href = "../doctor_add_prescription.html"
-					</script>';
-					exit();
-		}else{
-			if($conn->exec($sql)){
-				$last_id = $conn->lastInsertId();
-				echo $last_id;
-				$sql2 = "INSERT INTO `pre_drg`(`PRID`, `DRID`, `dose`, `Remark`) VALUES ";
-				foreach ($tabl_drug as &$drug) {
-					$sql2 .= "(" . $last_id . "," . $drug['DRID'] . "," . $drug['dose'] . ",\"" . $drug['Remark'] . "\"),";
+
+		try{
+			if(!$conn = $db->connect()){
+				echo'<script language="javascript">
+						window.location.href = "../doctor_add_prescription.html"
+						</script>';
+						exit();
+			}else{
+				if($conn->exec($sql)){
+					$last_id = $conn->lastInsertId();
+					$sql2 = "INSERT INTO `pre_drg`(`PRID`, `DRID`, `dose`, `Remark`) VALUES ";
+					foreach ($tabl_drug as &$drug) {
+						$sql2 .= "(" . $last_id . "," . $drug['DRID'] . ",\"" . $drug['dose'] . "\",\"" . $drug['Remark'] . "\"),";
+					}
+					$sql2 = substr_replace($sql2 ,";",-1);
+					if(!$conn = $db->connect()){
+						echo'<script language="javascript">
+								window.alert("Error in Uploding Data ")
+								window.location.href = "../doctor_add_prescription.html"
+								</script>';
+								exit();
+					}else{
+						$stmt = $conn->prepare($sql2);
+						$stmt->execute();
+						updateQueueStatus($txtPresDQID,1);
+						// echo '<script language="javascript">
+						// 		window.alert("Data Upload Successfull !")
+						// 		window.location.href = "../doctor_add_prescription.html"
+						// 		</script>';
+						// 		exit();
+					}
 				}
-				$sql2 = substr_replace($sql2 ,";",-1);
-				echo $sql2;
-				if(!$conn = $db->connect()){
-					echo'<script language="javascript">
-							window.alert("Error in Uploding Data ")
-							window.location.href = "../doctor_add_prescription.html"
-							</script>';
-							exit();
-				}else{
-					$stmt = $conn->prepare($sql2);
-					$stmt->execute();
-					updateQueueStatus($txtPresDQID,1);
-					echo '<script language="javascript">
-							window.alert("Data Upload Successfull !")
-							window.location.href = "../doctor_add_prescription.html"
-							</script>';
-							exit();
-				}
-			}
-    		
-    	}
+				
+			}	
+		}catch(Exception $e){
+			echo 'Message: ' . $e->getMessage();
+		}
 	}
 
 	if(isset($_POST['loadDrugs'])) {
@@ -125,5 +127,3 @@
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo json_encode($result);
 	}
-
-?>
