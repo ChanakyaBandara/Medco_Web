@@ -67,8 +67,14 @@
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo json_encode($result);
 	}
-
+	
 	if(isset($_POST['addPrescription'])){
+		echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+	}
+
+	if(isset($_POST['addPrescription']) && isset($_POST['txtPresDQID']) && isset($_POST['txtPresMID']) && isset($_POST['txtPresDID'])){
 		
 		$txtPresQRID = "PRE_".uniqid();
 		$txtPresDQID = $_POST['txtPresDQID'];
@@ -78,7 +84,7 @@
 		$tabl_drug=$_POST['tabl_drug'];
 
         $db = new DbConnect;
-        $sql = "INSERT INTO `prescription`(`QR_ID`, `MID`, `DID`, `Description`) VALUES ('$txtPresQRID','$txtPresMID','$txtPresDID','$txtPresDescription')";
+        $sql = "INSERT INTO `prescription`(`QR_ID`, `MID`, `DID`) VALUES ('$txtPresQRID','$txtPresMID','$txtPresDID')";
 		
 		if(!$conn = $db->connect()){
 			echo'<script language="javascript">
@@ -125,5 +131,3 @@
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		echo json_encode($result);
 	}
-
-?>

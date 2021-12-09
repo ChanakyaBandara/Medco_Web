@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 10, 2021 at 12:30 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- Host: localhost
+-- Generation Time: Sep 09, 2021 at 09:26 AM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `medco`
+-- Database: `Medco`
 --
 
 -- --------------------------------------------------------
@@ -66,7 +65,9 @@ CREATE TABLE `doctor_queue` (
 --
 
 INSERT INTO `doctor_queue` (`DQID`, `DID`, `MID`, `timestamp`, `status`) VALUES
-(5, 14, 3, '2021-12-10 04:57:31', 1);
+(1, 14, 2, '2021-09-09 09:33:53', 0),
+(2, 16, 3, '2021-09-09 12:29:46', 0),
+(3, 16, 3, '2021-09-09 12:32:31', 0);
 
 -- --------------------------------------------------------
 
@@ -153,6 +154,17 @@ CREATE TABLE `phamacy_queue` (
   `status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `phamacy_queue`
+--
+
+INSERT INTO `phamacy_queue` (`PQID`, `PHID`, `PREID`, `timestamp`, `status`) VALUES
+(1, 4, 13, '2021-09-09 09:41:19', 0),
+(2, 4, 4, '2021-09-09 12:13:09', 0),
+(3, 4, 13, '2021-09-09 12:18:59', 0),
+(4, 5, 3, '2021-09-09 12:43:43', 0),
+(5, 5, 13, '2021-09-09 12:48:13', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -186,7 +198,7 @@ INSERT INTO `pharmacy` (`ph_ID`, `Ph_name`, `Ph_reg`, `location`, `phone`, `ph_e
 
 CREATE TABLE `prescription` (
   `Pre_ID` int(11) NOT NULL,
-  `Pre_Date` date NOT NULL DEFAULT current_timestamp(),
+  `Pre_Date` date NOT NULL,
   `QR_ID` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL,
   `MID` int(11) NOT NULL,
   `DID` int(11) NOT NULL
@@ -199,9 +211,7 @@ CREATE TABLE `prescription` (
 INSERT INTO `prescription` (`Pre_ID`, `Pre_Date`, `QR_ID`, `MID`, `DID`) VALUES
 (3, '2021-06-16', '456456', 3, 14),
 (4, '2021-06-11', '434234', 3, 14),
-(13, '2021-08-19', '123456', 3, 14),
-(14, '0000-00-00', 'PRE_61b290020f781', 3, 14),
-(15, '0000-00-00', 'PRE_61b290f4c9aa4', 3, 14);
+(13, '2021-08-19', '123456', 3, 14);
 
 -- --------------------------------------------------------
 
@@ -227,10 +237,7 @@ INSERT INTO `pre_drg` (`PDID`, `PRID`, `DRID`, `dose`, `Remark`) VALUES
 (3, 4, 2, '50', ''),
 (4, 3, 1, '20', ''),
 (5, 13, 1, '20', 'Morning'),
-(6, 13, 2, '10', 'Evining'),
-(7, 14, 2, '1', 'day'),
-(8, 14, 3, '2', 'night'),
-(9, 15, 1, '1', 'night');
+(6, 13, 2, '10', 'Evining');
 
 -- --------------------------------------------------------
 
@@ -350,7 +357,7 @@ ALTER TABLE `doctor`
 -- AUTO_INCREMENT for table `doctor_queue`
 --
 ALTER TABLE `doctor_queue`
-  MODIFY `DQID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `DQID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `drugs`
@@ -386,13 +393,13 @@ ALTER TABLE `pharmacy`
 -- AUTO_INCREMENT for table `prescription`
 --
 ALTER TABLE `prescription`
-  MODIFY `Pre_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Pre_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `pre_drg`
 --
 ALTER TABLE `pre_drg`
-  MODIFY `PDID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `PDID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
