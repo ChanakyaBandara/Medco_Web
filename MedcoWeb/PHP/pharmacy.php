@@ -37,5 +37,32 @@
 		echo json_encode($result);
 	}
 
+	if(isset($_POST['addCheckout']) && isset($_POST['txtPresID']) && isset($_POST['txtCost']) && isset($_POST['txtPHID'])){
+		
+		$ref = $_POST['txtRef'];
+        $cost = $_POST['txtCost'];
+        $phid = $_POST['txtPHID'];
+		$presid = $_POST['txtPresID'];
+
+        $db = new DbConnect;
+        $sql = "INSERT INTO `oders`(`reference`, `Cost`, `PHID`, `PID`) VALUES ('$ref','$cost','$phid','$presid')";
+		
+		if(!$conn = $db->connect()){
+			echo'<script language="javascript">
+					window.location.href = "../pharmacy_view_prescriptions.html"
+					</script>';
+					exit();
+		}else{
+			if($conn->exec($sql)){
+				$last_id = $conn->lastInsertId();
+				echo '<script language="javascript">
+							window.alert("Data Upload Successfull !")
+							window.location.href = "../pharmacy_view_history.html"
+							</script>';
+							exit();
+			}
+    		
+    	}
+	}
 
 ?>

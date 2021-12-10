@@ -256,7 +256,8 @@
     <script language="javascript">
 
         function checkout(objButton){  
-            alert(objButton.value);
+            const PresID = objButton.value;
+            window.location.href = "pharmacy_checkout.html?PresID=" + PresID;
         }
 
         $(document).ready(function () {
