@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2021 at 01:25 AM
+-- Generation Time: Dec 10, 2021 at 12:30 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -125,8 +125,8 @@ INSERT INTO `member` (`MID`, `name`, `email`, `nic`, `age`, `phone`, `gender`, `
 
 CREATE TABLE `oders` (
   `oder_id` int(11) NOT NULL,
-  `oder_date` date NOT NULL DEFAULT current_timestamp(),
-  `reference` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci DEFAULT NULL,
+  `oder_date` date NOT NULL,
+  `reference` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_croatian_ci NOT NULL,
   `Cost` int(11) NOT NULL,
   `PHID` int(11) NOT NULL,
   `PID` int(11) NOT NULL
@@ -137,8 +137,7 @@ CREATE TABLE `oders` (
 --
 
 INSERT INTO `oders` (`oder_id`, `oder_date`, `reference`, `Cost`, `PHID`, `PID`) VALUES
-(1, '2021-07-08', 'asdasdads', 200, 4, 4),
-(5, '2021-12-10', 'aaa', 1000, 4, 13);
+(1, '2021-07-08', 'asdasdads', 200, 4, 4);
 
 -- --------------------------------------------------------
 
@@ -153,13 +152,6 @@ CREATE TABLE `phamacy_queue` (
   `timestamp` datetime NOT NULL DEFAULT current_timestamp(),
   `status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `phamacy_queue`
---
-
-INSERT INTO `phamacy_queue` (`PQID`, `PHID`, `PREID`, `timestamp`, `status`) VALUES
-(6, 4, 13, '2021-12-10 05:28:23', 0);
 
 -- --------------------------------------------------------
 
@@ -376,13 +368,13 @@ ALTER TABLE `member`
 -- AUTO_INCREMENT for table `oders`
 --
 ALTER TABLE `oders`
-  MODIFY `oder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `oder_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `phamacy_queue`
 --
 ALTER TABLE `phamacy_queue`
-  MODIFY `PQID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `PQID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pharmacy`
