@@ -7,6 +7,18 @@
 		
 		$db = new DbConnect;
 		$conn = $db->connect();
+		$stmt = $conn->prepare("SELECT `PQID`,`Pre_ID`, `name`, `Pre_Date`, `timestamp` FROM `prescription`,`phamacy_queue`,`member` WHERE phamacy_queue.PREID = prescription.Pre_ID AND `member`.`MID`= prescription.MID AND phamacy_queue.PHID = '$PHID' ;");
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo json_encode($result);
+	}
+
+	if(isset($_POST['loadOders'])) {
+
+		$PHID = $_POST['loadOders'];
+		
+		$db = new DbConnect;
+		$conn = $db->connect();
 		$stmt = $conn->prepare("SELECT * FROM `prescription`,`oders` WHERE prescription.Pre_ID = oders.PID AND oders.PHID = '$PHID' ;");
 		$stmt->execute();
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);

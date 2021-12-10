@@ -11,18 +11,20 @@ function loadPrescription() {
     $("#pharmacyViewPrescriptionTBL").empty();
     $("#pharmacyViewPrescriptionTBL").append(
       //`Pre_ID`, `Pre_Date`, `QR_ID`
-      "<thead><tr><th>Prescription ID</th><th>Prescription Date</th><th>QR Code</th>"
+      "<thead><tr><th>Queue ID</th><th>Name</th><th>Prescription Date</th><th>Queue log</th>"
     );
     result.forEach(function (result) {
       $("#pharmacyViewPrescriptionTBL").append(
         '<tr  onClick="loadPresciptionItems(' +
           result.Pre_ID +
           ')"><td>' +
-          result.Pre_ID +
+          result.PQID +
+          "</td><td>" +
+          result.name +
           "</td><td>" +
           result.Pre_Date +
           "</td><td>" +
-          result.QR_ID +
+          result.timestamp +
           "</td></tr>"
       );
     });
@@ -32,6 +34,7 @@ function loadPrescription() {
 
 function loadPresciptionItems(pre_id) {
   console.log(pre_id);
+  document.getElementById("checkoutBtn").value = pre_id
   $.ajax({
     url: "PHP/doctor.php",
     method: "post",

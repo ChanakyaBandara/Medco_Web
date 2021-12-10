@@ -230,6 +230,9 @@
                     </table>
                 </div>
             </div>
+            <div>
+                <button type="button" id="checkoutBtn" onclick='checkout(this)' class="btn btn-primary mt-4 pr-4 pl-4">Add to cart</button>
+            </div>
         </div>
 
     </div>
@@ -251,6 +254,11 @@
 
     <script language="javascript" src="js/pharmacy.js"> </script>
     <script language="javascript">
+
+        function checkout(objButton){  
+            alert(objButton.value);
+        }
+
         $(document).ready(function () {
             modal = document.getElementById("myModal");
             closeBtn = document.getElementById("closeBtn");
